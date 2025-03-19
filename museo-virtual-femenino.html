@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museo Virtual - Estilo Femenino</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f9e6f0;
+            color: #4a2040;
+            overflow: hidden;
+        }
+        
+        .museo-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAwIiBoZWlnaHQ9IjgwMCI+PHJlY3Qgd2lkdGg9IjEwMDAiIGhlaWdodD0iODAwIiBmaWxsPSIjZjVkNmViIi8+PHBhdGggZD0iTTAgMCBMIDEwMDAgMCBMIDEwMDAgMTUwIEwgMCAxNTAgWiIgZmlsbD0iI2Y4ZTNmMiIvPjxwYXRoIGQ9Ik0wIDcwMCBMIDEwMDAgNzAwIEwgMTAwMCA4MDAgTCAwIDgwMCBaIiBmaWxsPSIjZWZjNmUzIi8+PHBhdGggZD0iTTAgMCBMIDAgODAwIE0gMTAwIDAgTCAxMDAgODAwIE0gMjAwIDAgTCAyMDAgODAwIE0gMzAwIDAgTCAzMDAgODAwIE0gNDAwIDAgTCA0MDAgODAwIE0gNTAwIDAgTCA1MDAgODAwIE0gNjAwIDAgTCA2MDAgODAwIE0gNzAwIDAgTCA3MDAgODAwIE0gODAwIDAgTCA4MDAgODAwIE0gOTAwIDAgTCA5MDAgODAwIE0gMTAwMCAwIEwgMTAwMCA4MDAiIHN0cm9rZT0iI2YwZDJlYSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTAgMCBMIDEwMDAgMCBNIDAgMTAwIEwgMTAwMCAxMDAgTSAwIDIwMCBMIDEwMDAgMjAwIE0gMCAzMDAgTCAxMDAwIDMwMCBNIDAgNDAwIEwgMTAwMCA0MDAgTSAwIDUwMCBMIDEwMDAgNTAwIE0gMCA2MDAgTCAxMDAwIDYwMCBNIDAgNzAwIEwgMTAwMCA3MDAgTSAwIDgwMCBMIDEwMDAgODAwIiBzdHJva2U9IiNmMGQyZWEiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==');
+            background-size: cover;
+        }
+        
+        .lights {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .light {
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, rgba(255,200,255,0.9) 0%, rgba(255,220,255,0.6) 30%, rgba(255,200,255,0) 70%);
+            border-radius: 50%;
+            margin-top: 20px;
+            box-shadow: 0 0 20px 10px rgba(255, 180, 220, 0.4);
+        }
+        
+        .light::after {
+            content: '';
+            position: absolute;
+            top: 30px;
+            width: 100px;
+            height: 200px;
+            background: linear-gradient(to bottom, rgba(255,180,220,0.4) 0%, rgba(255,180,220,0) 100%);
+            clip-path: polygon(50% 0%, 20% 100%, 80% 100%);
+            transform: translateX(-35px);
+        }
+        
+        .estante {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 70%;
+            background-color: rgba(250, 230, 245, 0.8);
+            border: 2px solid #e0b0d0;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(220, 180, 200, 0.5);
+            display: flex;
+            padding: 20px;
+            transition: opacity 0.5s;
+        }
+        
+        .imagen-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .imagen-container::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 30px;
+            bottom: -15px;
+            background-color: #e6bfd8;
+            box-shadow: 0 5px 15px rgba(210, 150, 180, 0.3);
+            border-radius: 5px;
+        }
+        
+        .imagen-obra {
+            max-width: 100%;
+            max-height: 80%;
+            object-fit: contain;
+            box-shadow: 0 10px 30px rgba(210, 150, 180, 0.7);
+            border: 5px solid #e6bfd8;
+        }
+        
+        .ficha-tecnica {
+            flex: 0 0 450px;
+            margin-left: 20px;
+            padding: 20px;
+            background-color: rgba(240, 200, 230, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(210, 150, 180, 0.5);
+            overflow-y: auto;
+        }
+        
+        .ficha-tecnica h2 {
+            margin-bottom: 15px;
+            color: #b05a87;
+            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.5);
+            font-family: 'Georgia', serif;
+        }
+        
+        .ficha-tecnica p {
+            margin-bottom: 10px;
+            line-height: 1.5;
+            color: #6d2952;
+        }
+        
+        .ficha-tecnica strong {
+            color: #b05a87;
+        }
+        
+        .navegacion {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .btn-nav {
+            background-color: rgba(230, 180, 210, 0.7);
+            color: #6d2952;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .btn-nav:hover {
+            background-color: rgba(230, 180, 210, 0.9);
+            transform: scale(1.05);
+        }
+        
+        .flechas {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            transform: translateY(-50%);
+        }
+        
+        .flecha {
+            background-color: rgba(230, 180, 210, 0.7);
+            color: #6d2952;
+            border: 2px solid #d8a5c5;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .flecha:hover {
+            background-color: rgba(230, 180, 210, 0.9);
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(210, 150, 180, 0.5);
+        }
+        
+        .contador {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(230, 180, 210, 0.7);
+            color: #6d2952;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            border: 1px solid #d8a5c5;
+        }
+    </style>
+</head>
+<body>
+    <div class="museo-container">
+        <div class="lights">
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+        </div>
+        
+        <div id="estante-1" class="estante" style="display:flex;">
+            <div class="imagen-container">
+                <img class="imagen-obra" src="obra-1.jpg" alt="Obra 1">
+            </div>
+            <div class="ficha-tecnica">
+                <h2>Título de la Obra 1</h2>
+                <p><strong>Artista:</strong> Nombre del Artista</p>
+                <p><strong>Año:</strong> XXXX</p>
+                <p><strong>Técnica:</strong> Técnica utilizada</p>
+                <p><strong>Dimensiones:</strong> XX x XX cm</p>
+                <p><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit euismod, tincidunt nisl a, finibus sapien. Sed vitae lacinia purus, in scelerisque nunc.</p>
+            </div>
+        </div>
+        
+        <div id="estante-2" class="estante" style="display:none;">
+            <div class="imagen-container">
+                <img class="imagen-obra" src="obra-2.jpg" alt="Obra 2">
+            </div>
+            <div class="ficha-tecnica">
+                <h2>Título de la Obra 2</h2>
+                <p><strong>Artista:</strong> Nombre del Artista</p>
+                <p><strong>Año:</strong> XXXX</p>
+                <p><strong>Técnica:</strong> Técnica utilizada</p>
+                <p><strong>Dimensiones:</strong> XX x XX cm</p>
+                <p><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit euismod, tincidunt nisl a, finibus sapien. Sed vitae lacinia purus, in scelerisque nunc.</p>
+            </div>
+        </div>
+        
+        <div id="estante-3" class="estante" style="display:none;">
+            <div class="imagen-container">
+                <img class="imagen-obra" src="obra-3.jpg" alt="Obra 3">
+            </div>
+            <div class="ficha-tecnica">
+                <h2>Título de la Obra 3</h2>
+                <p><strong>Artista:</strong> Nombre del Artista</p>
+                <p><strong>Año:</strong> XXXX</p>
+                <p><strong>Técnica:</strong> Técnica utilizada</p>
+                <p><strong>Dimensiones:</strong> XX x XX cm</p>
+                <p><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit euismod, tincidunt nisl a, finibus sapien. Sed vitae lacinia purus, in scelerisque nunc.</p>
+            </div>
+        </div>
+        
+        <div id="estante-4" class="estante" style="display:none;">
+            <div class="imagen-container">
+                <img class="imagen-obra" src="obra-4.jpg" alt="Obra 4">
+            </div>
+            <div class="ficha-tecnica">
+                <h2>Título de la Obra 4</h2>
+                <p><strong>Artista:</strong> Nombre del Artista</p>
+                <p><strong>Año:</strong> XXXX</p>
+                <p><strong>Técnica:</strong> Técnica utilizada</p>
+                <p><strong>Dimensiones:</strong> XX x XX cm</p>
+                <p><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit euismod, tincidunt nisl a, finibus sapien. Sed vitae lacinia purus, in scelerisque nunc.</p>
+            </div>
+        </div>
+        
+        <div id="estante-5" class="estante" style="display:none;">
+            <div class="imagen-container">
+                <img class="imagen-obra" src="obra-5.jpg" alt="Obra 5">
+            </div>
+            <div class="ficha-tecnica">
+                <h2>Título de la Obra 5</h2>
+                <p><strong>Artista:</strong> Nombre del Artista</p>
+                <p><strong>Año:</strong> XXXX</p>
+                <p><strong>Técnica:</strong> Técnica utilizada</p>
+                <p><strong>Dimensiones:</strong> XX x XX cm</p>
+                <p><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit euismod, tincidunt nisl a, finibus sapien. Sed vitae lacinia purus, in scelerisque nunc.</p>
+            </div>
+        </div>
+        
+        <div id="estante-6" class="estante" style="display:none;">
+            <div class="imagen-container">
+                <img class="imagen-obra" src="obra-6.jpg" alt="Obra 6">
+            </div>
+            <div class="ficha-tecnica">
+                <h2>Título de la Obra 6</h2>
+                <p><strong>Artista:</strong> Nombre del Artista</p>
+                <p><strong>Año:</strong> XXXX</p>
+                <p><strong>Técnica:</strong> Técnica utilizada</p>
+                <p><strong>Dimensiones:</strong> XX x XX cm</p>
+                <p><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit euismod, tincidunt nisl a, finibus sapien. Sed vitae lacinia purus, in scelerisque nunc.</p>
+            </div>
+        </div>
+        
+        <div id="estante-7" class="estante" style="display:none;">
+            <div class="imagen-container">
+                <img class="imagen-obra" src="obra-7.jpg" alt="Obra 7">
+            </div>
+            <div class="ficha-tecnica">
+                <h2>Título de la Obra 7</h2>
+                <p><strong>Artista:</strong> Nombre del Artista</p>
+                <p><strong>Año:</strong> XXXX</p>
+                <p><strong>Técnica:</strong> Técnica utilizada</p>
+                <p><strong>Dimensiones:</strong> XX x XX cm</p>
+                <p><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit euismod, tincidunt nisl a, finibus sapien. Sed vitae lacinia purus, in scelerisque nunc.</p>
+            </div>
+        </div>
+        
+        <div id="estante-8" class="estante" style="display:none;">
+            <div class="imagen-container">
+                <img class="imagen-obra" src="obra-8.jpg" alt="Obra 8">
+            </div>
+            <div class="ficha-tecnica">
+                <h2>Título de la Obra 8</h2>
+                <p><strong>Artista:</strong> Nombre del Artista</p>
+                <p><strong>Año:</strong> XXXX</p>
+                <p><strong>Técnica:</strong> Técnica utilizada</p>
+                <p><strong>Dimensiones:</strong> XX x XX cm</p>
+                <p><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit euismod, tincidunt nisl a, finibus sapien. Sed vitae lacinia purus, in scelerisque nunc.</p>
+            </div>
+        </div>
+        
+        <div id="estante-9" class="estante" style="display:none;">
+            <div class="imagen-container">
+                <img class="imagen-obra" src="obra-9.jpg" alt="Obra 9">
+            </div>
+            <div class="ficha-tecnica">
+                <h2>Título de la Obra 9</h2>
+                <p><strong>Artista:</strong> Nombre del Artista</p>
+                <p><strong>Año:</strong> XXXX</p>
+                <p><strong>Técnica:</strong> Técnica utilizada</p>
+                <p><strong>Dimensiones:</strong> XX x XX cm</p>
+                <p><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit euismod, tincidunt nisl a, finibus sapien. Sed vitae lacinia purus, in scelerisque nunc.</p>
+            </div>
+        </div>
+        
+        <div id="estante-10" class="estante" style="display:none;">
+            <div class="imagen-container">
+                <img class="imagen-obra" src="obra-10.jpg" alt="Obra 10">
+            </div>
+            <div class="ficha-tecnica">
+                <h2>Título de la Obra 10</h2>
+                <p><strong>Artista:</strong> Nombre del Artista</p>
+                <p><strong>Año:</strong> XXXX</p>
+                <p><strong>Técnica:</strong> Técnica utilizada</p>
+                <p><strong>Dimensiones:</strong> XX x XX cm</p>
+                <p><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit euismod, tincidunt nisl a, finibus sapien. Sed vitae lacinia purus, in scelerisque nunc.</p>
+            </div>
+        </div>
+        
+        <div id="estante-11" class="estante" style="display:none;">
+            <div class="imagen-container">
+                <img class="imagen-obra" src="obra-11.jpg" alt="Obra 11">
+            </div>
+            <div class="ficha-tecnica">
+                <h2>Título de la Obra 11</h2>
+                <p><strong>Artista:</strong> Nombre del Artista</p>
+                <p><strong>Año:</strong> XXXX</p>
+                <p><strong>Técnica:</strong> Técnica utilizada</p>
+                <p><strong>Dimensiones:</strong> XX x XX cm</p>
+                <p><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit euismod, tincidunt nisl a, finibus sapien. Sed vitae lacinia purus, in scelerisque nunc.</p>
+            </div>
+        </div>
+        
+        <div id="estante-12" class="estante" style="display:none;">
+            <div class="imagen-container">
+                <img class="imagen-obra" src="obra-12.jpg" alt="Obra 12">
+            </div>
+            <div class="ficha-tecnica">
+                <h2>Título de la Obra 12</h2>
+                <p><strong>Artista:</strong> Nombre del Artista</p>
+                <p><strong>Año:</strong> XXXX</p>
+                <p><strong>Técnica:</strong> Técnica utilizada</p>
+                <p><strong>Dimensiones:</strong> XX x XX cm</p>
+                <p><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit euismod, tincidunt nisl a, finibus sapien. Sed vitae lacinia purus, in scelerisque nunc.</p>
+            </div>
+        </div>
+        
+        <div id="estante-13" class="estante" style="display:none;">
+            <div class="imagen-container">
+                <img class="imagen-obra" src="obra-13.jpg" alt="Obra 13">
+            </div>
+            <div class="ficha-tecnica">
+                <h2>Título de la Obra 13</h2>
+                <p><strong>Artista:</strong> Nombre del Artista</p>
+                <p><strong>Año:</strong> XXXX</p>
+                <p><strong>Técnica:</strong> Técnica utilizada</p>
+                <p><strong>Dimensiones:</strong> XX x XX cm</p>
+                <p><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit euismod, tincidunt nisl a, finibus sapien. Sed vitae lacinia purus, in scelerisque nunc.</p>
+            </div>
+        </div>
+        
+        <div id="estante-14" class="estante" style="display:none;">
+            <div class="imagen-container">
+                <img class="imagen-obra" src="obra-14.jpg" alt="Obra 14">
+            </div>
+            <div class="ficha-tecnica">
+                <h2>Título de la Obra 14</h2>
+                <p><strong>Artista:</strong> Nombre del Artista</p>
+                <p><strong>Año:</strong> XXXX</p>
+                <p><strong>Técnica:</strong> Técnica utilizada</p>
+                <p><strong>Dimensiones:</strong> XX x XX cm</p>
+                <p><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit euismod, tincidunt nisl a, finibus sapien. Sed vitae lacinia purus, in scelerisque nunc.</p>
+            </div>
+        </div>
+        
+        <div id="estante-15" class="estante" style="display:none;">
+            <div class="imagen-container">
+                <img class="imagen-obra" src="obra-15.jpg" alt="Obra 15">
+            </div>
+            <div class="ficha-tecnica">
+                <h2>Título de la Obra 15</h2>
+                <p><strong>Artista:</strong> Nombre del Artista</p>
+                <p><strong>Año:</strong> XXXX</p>
+                <p><strong>Técnica:</strong> Técnica utilizada</p>
+                <p><strong>Dimensiones:</strong> XX x XX cm</p>
+                <p><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit euismod, tincidunt nisl a, finibus sapien. Sed vitae lacinia purus, in scelerisque nunc.</p>
+            </div>
+        </div>
+        
+        <div class="flechas">
+            <button class="flecha" id="prev">&#10094;</button>
+            <button class="flecha" id="next">&#10095;</button>
+        </div>
+        
+        <div class="contador" id="contador">1 / 15</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const estantes = document.querySelectorAll('.estante');
+            const prevBtn = document.getElementById('prev');
+            const nextBtn = document.getElementById('next');
+            const contador = document.getElementById('contador');
+            let currentEstante = 0;
+            
+            // Función para mostrar el estante actual
+            function showEstante(index) {
+                estantes.forEach((estante, i) => {
+                    if (i === index) {
+                        estante.style.display = 'flex';
+                    } else {
+                        estante.style.display = 'none';
+                    }
+                });
+                contador.textContent = `${index + 1} / ${estantes.length}`;
+            }
+            
+            // Botón anterior
+            prevBtn.addEventListener('click', function() {
+                currentEstante = (currentEstante - 1 + estantes.length) % estantes.length;
+                showEstante(currentEstante);
+            });
+            
+            // Botón siguiente
+            nextBtn.addEventListener('click', function() {
+                currentEstante = (currentEstante + 1) % estantes.length;
+                showEstante(currentEstante);
+            });
+            
+            // También permitir navegación con teclado
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft') {
+                    prevBtn.click();
+                } else if (e.key === 'ArrowRight') {
+                    nextBtn.click();
+                }
+            });
+            
+            // Mostrar el primer estante al cargar
+            showEstante(currentEstante);
+            
+            // Añadir efecto de luces
+            const lights = document.querySelectorAll('.light');
+            lights.forEach((light, index) => {
+                const delay = index * 500;
+                setInterval(() => {
+                    light.style.opacity = '0.8';
+                    setTimeout(() => {
+                        light.style.opacity = '1';
+                    }, 200);
+                }, 3000 + delay);
+            });
+        });
+    </script>
+</body>
+</html>

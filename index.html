@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museo Virtual - Paola Rodriguez</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+        }
+        
+        .museo-container {
+            width: 100%;
+            height: 100vh;
+            background-image: url('fondo-museo.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .luces {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .luz {
+            width: 60px;
+            height: 80px;
+            background: radial-gradient(ellipse at center, rgba(255,255,220,0.8) 0%, rgba(255,255,220,0) 70%);
+            position: relative;
+        }
+        
+        .lampara {
+            width: 20px;
+            height: 20px;
+            background-color: #FFD700;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 20px;
+            box-shadow: 0 0 10px rgba(255, 255, 220, 0.8);
+        }
+        
+        .museo-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+        
+        .estante {
+            width: 80%;
+            height: 70%;
+            background-color: rgba(250, 240, 245, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            padding: 20px;
+            position: relative;
+            margin: auto;
+            border: 8px solid #d4b6cc;
+        }
+        
+        .ficha-tecnica {
+            flex: 1;
+            padding: 20px;
+            color: #6b4c5e;
+            overflow-y: auto;
+            font-size: 16px;
+            line-height: 1.6;
+            background-color: rgba(255, 250, 255, 0.9);
+            border-radius: 10px;
+            margin-right: 20px;
+            border: 2px solid #e0c5d6;
+        }
+        
+        .imagen-container {
+            flex: 1.3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 250, 255, 0.9);
+            border-radius: 10px;
+            padding: 10px;
+            border: 2px solid #e0c5d6;
+            position: relative;
+        }
+        
+        .obra-imagen {
+            max-width: 100%;
+            max-height: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .navegacion {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+        
+        .boton-nav {
+            background-color: rgba(219, 178, 209, 0.9);
+            border: none;
+            color: white;
+            padding: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .boton-nav:hover {
+            background-color: rgba(203, 151, 190, 0.9);
+            transform: scale(1.1);
+        }
+        
+        .titulo-obra {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #8e5a7b;
+            text-align: center;
+            font-weight: bold;
+            font-family: 'Palatino', serif;
+        }
+        
+        .contador-estantes {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            background-color: rgba(219, 178, 209, 0.7);
+            padding: 8px;
+            width: 80px;
+            margin: auto;
+            border-radius: 20px;
+        }
+        
+        h2, h3 {
+            color: #8e5a7b;
+        }
+        
+        /* Efecto de luz para las obras */
+        .luz-obra {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(ellipse at center, rgba(255,255,220,0.4) 0%, rgba(255,255,220,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="museo-container">
+        <!-- Luces en el techo -->
+        <div class="luces">
+            <div class="luz"><div class="lampara"></div></div>
+            <div class="luz"><div class="lampara"></div></div>
+            <div class="luz"><div class="lampara"></div></div>
+            <div class="luz"><div class="lampara"></div></div>
+            <div class="luz"><div class="lampara"></div></div>
+        </div>
+        
+        <!-- Navegación -->
+        <div class="navegacion">
+            <button class="boton-nav" id="prev">←</button>
+            <button class="boton-nav" id="next">→</button>
+        </div>
+        
+        <!-- Contenido del museo -->
+        <div class="museo-content">
+            <div class="estante">
+                <div class="ficha-tecnica" id="ficha-actual">
+                    <h2 class="titulo-obra" id="titulo-actual">Título de la Obra</h2>
+                    <div id="descripcion-actual">
+                        <p>Información sobre la obra...</p>
+                    </div>
+                </div>
+                <div class="imagen-container">
+                    <div class="luz-obra"></div>
+                    <img class="obra-imagen" id="imagen-actual" src="imagen1.jpg" alt="Obra de arte">
+                </div>
+            </div>
+        </div>
+        
+        <div class="contador-estantes">
+            <span id="estante-actual">1</span>/13
+        </div>
+    </div>
+
+    <script>
+        // Datos de las obras (puedes modificar o expandir esta información)
+        const obras = [
+            {
+                titulo: "Jarrón con Flores",
+                imagen: "imagen1.jpg",
+                descripcion: `
+                    <p>
+    <strong>Diseño</strong><br>
+    • Forma elegante y estilizada<br>
+    • Cuello angosto con terminación negra<br>
+    • Cuerpo amplio con base estrecha
+</p>
+
+<p>
+    <strong>Color</strong><br>
+    • Base naranja<br>
+    • Decoraciones florales en tonos rosados y verdes<br>
+    • Flores artificiales de color rojo brillante
+</p>
+
+<p>
+    <strong>Material</strong><br>
+    • Cerámica o material similar<br>
+    • Acabado brillante y lustroso
+</p>
+
+<p>
+    <strong>Flores artificiales</strong><br>
+    • Rosas rojas prominentes<br>
+    • Hojas verdes intercaladas<br>
+    • Decoraciones de encaje transparente
+</p>
+
+<p>
+    <strong>Disposición</strong><br>
+    • Altura considerable<br>
+    • Flores dispuestas en cascada<br>
+    • Efecto natural y abundante
+</p>
+
+<p>
+    <strong>Uso</strong><br>
+    • Decoración interior<br>
+    • Aporta color y vida artificial<br>
+    • Ideal para espacios que requieren mantenimiento mínimo
+</p>`
+            },
+            {
+                titulo: "Cuadro en Lienzo",
+                imagen: "imagen2.jpg",
+                descripcion: `
+                    <p>
+    <p>
+    <strong>Tema principal</strong><br>
+    • Loro de colores vibrantes<br>
+    • Flores tropicales (hibisco y hojas de palma)
+</p>
+
+<p>
+    <strong>Estilo artístico</strong><br>
+    • Realismo con toques impresionistas<br>
+    • Pintura de tema exótico y naturalista
+</p>
+
+<p>
+    <strong>Técnica</strong><br>
+    • Pintura al óleo o acrílica sobre lienzo<br>
+    • Trabajo detallado en plumaje y pétalos
+</p>
+
+<p>
+    <strong>Colores predominantes</strong><br>
+    • Rojo intenso (cuerpo del loro)<br>
+    • Amarillo (cabeza del loro y flores)<br>
+    • Azul (alas del loro)<br>
+    • Verde (hojas y plumas)<br>
+    • Blanco (fondo y detalles en flores)
+</p>
+
+<p>
+    <strong>Composición</strong><br>
+    • Loro posado en ramas con flores<br>
+    • Disposición diagonal del loro<br>
+    • Flores y hojas ocupando espacio inferior y lateral<br>
+    • Fondo neutro que resalta los colores del sujeto
+</p>
+
+<p>
+    <strong>Detalles notables</strong><br>
+    • Texturas visibles en plumas y pétalos<br>
+    • Juego de luces y sombras en el plumaje<br>
+    • Pinceladas visibles en hojas y flores<br>
+    • Representación realista del pico y ojos del loro
+</p>
+`
+            },
+            {
+                titulo: "Certificado Bancario",
+                imagen: "imagen3.jpg",
+                descripcion: `
+                   <p>
+    <strong>Tipo de documento</strong><br>
+    • Certificación Bancaria
+</p>
+
+<p>
+    <strong>Entidad emisora</strong><br>
+    • Bancolombia S.A.
+</p>
+
+<p>
+    <strong>Fecha de emisión</strong><br>
+    • 8 de Enero de 2025
+</p>
+
+<p>
+    <strong>Destinatario</strong><br>
+    • A quien pueda Interesar
+</p>
+
+<p>
+    <strong>Información del titular</strong><br>
+    • Nombre: NELIDA PAOLA RODRIGUEZ GARZON<br>
+    • Identificación: CC No. 1022950849
+</p>
+
+<p>
+    <strong>Detalles de la cuenta</strong><br>
+    • Tipo de producto: CUENTA AHORROS PLAN ESTANDAR<br>
+    • Número de cuenta: 30106475865<br>
+    • Fecha de apertura: 2020/02/27<br>
+    • Estado: A ACTIVA
+</p>
+
+<p>
+    <strong>Notas adicionales</strong><br>
+    • El documento incluye información de contacto para verificar la autenticidad de la certificación<br>
+    • Mención de que la certificación se refiere únicamente al producto mencionado<br>
+    • Incluye el logo y nombre del banco en la parte superior<br>
+    • Pie de página con información de Grupo Bancolombia y número de página
+</p>`
+            },
+            {
+                titulo: "Certificado Sisben",
+                imagen: "imagen4.jpg",
+                descripcion: `
+                    <p>
+    <strong>Tipo de documento</strong><br>
+    • Certificación del Sisbén (Sistema de Identificación de Beneficiarios de los Programas de Asistencia Social)
+</p>
+
+<p>
+    <strong>Entidad emisora</strong><br>
+    • Sisbén
+</p>
+
+<p>
+    <strong>Fecha de consulta</strong><br>
+    • 07/01/2025
+</p>
+
+<p>
+    <strong>Número de ficha</strong><br>
+    • 25377005541800000478
+</p>
+
+<p>
+    <strong>Grupo Sisbén</strong><br>
+    • B6<br>
+    • Clasificación: Pobreza moderada
+</p>
+
+<p>
+    <strong>Datos personales</strong><br>
+    • Nombres: BRAYAN CAMILO<br>
+    • Apellidos: GARZON RODRIGUEZ<br>
+    • Tipo de documento: Tarjeta de identidad<br>
+    • Número de documento: 1068973445<br>
+    • Municipio: La Calera<br>
+    • Departamento: Cundinamarca
+</p>
+
+<p>
+    <strong>Información administrativa</strong><br>
+    • Encuesta vigente: 28/09/2020<br>
+    • Última actualización ciudadano: [Sin fecha especificada]<br>
+    • Última actualización vía registros administrativos: 23/05/2022
+</p>
+
+<p>
+    <strong>Contacto Oficina SISBEN</strong><br>
+    • Nombre administrador: JOSE MERISELDO CASTILLO HERNANDEZ<br>
+    • Dirección: Carrera 3 No - 10 Palacio Municipal<br>
+    • Teléfono: 8751369 - 8756676 - 321214155<br>
+    • Correo Electrónico: sisben@lacalera-cundinamarca.gov.co
+</p>`
+            },
+            {
+                titulo: "Formulario Afiliación EPS",
+                imagen: "imagen5.jpg",
+                descripcion: `
+                    <p>
+    <strong>Encabezado</strong><br>
+    • Formulario único de afiliación y registro de novedades al SGSSS<br>
+    • Entidad emisora: EPS Sanitas<br>
+    • Número de radicación: 182535636<br>
+    • Código de barras: presente en el documento
+</p>
+
+<p>
+    <strong>Secciones principales</strong><br>
+    • I. DATOS DEL TRAMITE<br>
+    &nbsp;&nbsp;• Tipo de trámite<br>
+    &nbsp;&nbsp;• Tipo de afiliación<br>
+    &nbsp;&nbsp;• Régimen<br>
+    &nbsp;&nbsp;• Tipo de cotizante<br>
+    &nbsp;&nbsp;• Categoría de afiliado<br>
+    &nbsp;&nbsp;• Tipo de documento<br>
+    &nbsp;&nbsp;• Número de documento<br>
+    &nbsp;&nbsp;• Apellidos y nombres<br>
+    &nbsp;&nbsp;• Sexo<br>
+    &nbsp;&nbsp;• Fecha de nacimiento<br>
+    
+    • II. DATOS COMPLEMENTARIOS<br>
+    &nbsp;&nbsp;• Etnia<br>
+    &nbsp;&nbsp;• Discapacidad<br>
+    &nbsp;&nbsp;• Condiciones<br>
+    &nbsp;&nbsp;• Puntaje SISBÉN<br>
+    &nbsp;&nbsp;• Grupo de población especial<br>
+    &nbsp;&nbsp;• Administradora de Riesgos Laborales - ARL<br>
+    &nbsp;&nbsp;• Administradora de Pensiones<br>
+    &nbsp;&nbsp;• Ingreso base de cotización -IBC<br>
+    &nbsp;&nbsp;• Residencia<br>
+    &nbsp;&nbsp;• Teléfono<br>
+    &nbsp;&nbsp;• Teléfono celular<br>
+    &nbsp;&nbsp;• Correo electrónico<br>
+    
+    • III. DATOS DE IDENTIFICACIÓN DE LOS MIEMBROS DEL NÚCLEO FAMILIAR<br>
+    &nbsp;&nbsp;• Apellidos y nombres<br>
+    &nbsp;&nbsp;• Tipo de documento de identidad<br>
+    &nbsp;&nbsp;• Número del documento de identidad<br>
+    &nbsp;&nbsp;• Sexo<br>
+    &nbsp;&nbsp;• Fecha de nacimiento<br>
+    
+    • IV. DATOS COMPLEMENTARIOS<br>
+    &nbsp;&nbsp;• Discapacidad<br>
+    &nbsp;&nbsp;• Condiciones<br>
+    &nbsp;&nbsp;• Zona<br>
+    &nbsp;&nbsp;• Departamento<br>
+    &nbsp;&nbsp;• Teléfono fijo y/o celular adicional<br>
+    
+    • V. SELECCIÓN DE LA IPS PRIMARIA<br>
+    &nbsp;&nbsp;• Nombre de la Institución Prestadora de Servicios de Salud - IPS<br>
+    &nbsp;&nbsp;• Código de la IPS
+</p>
+
+<p>
+    <strong>Pie de página</strong><br>
+    • Nota sobre los originales y copias<br>
+    • "Original: EPS - 1a Copia: EMPLEADOR - 2a Copia: AFILIADO"
+</p>`
+            },
+            {
+                titulo: "Cuadro Religioso",
+                imagen: "imagen6.jpg",
+                descripcion: `
+                    <p><strong>Identificación del cuadro</strong></p>
+<ul>
+  <li><strong>Título:</strong> "Nuestra Señora del Rosario de Chiquinquirá"</li>
+  <li><strong>Subtítulo:</strong> "Ruega Por Nosotros Madre de Dios"</li>
+</ul>
+
+<p><strong>Figuras religiosas representadas</strong></p>
+<ul>
+  <li><strong>Virgen del Rosario (Nuestra Señora del Rosario)</strong>
+    <ul>
+      <li>Representada con un rosario</li>
+      <li>Atuendo tradicional religioso</li>
+      <li>Corona en la cabeza</li>
+    </ul>
+  </li>
+  <li><strong>Santo varón (posiblemente San Domingo de Guzmán u otro santo asociado al rosario)</strong>
+    <ul>
+      <li>Representado con hábito religioso</li>
+      <li>Sostiene un libro o escrito</li>
+    </ul>
+  </li>
+  <li><strong>Figura femenina (posiblemente una monja o santa)</strong>
+    <ul>
+      <li>Representada con hábito religioso</li>
+      <li>Sostiene un rosario</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Elementos simbólicos</strong></p>
+<ul>
+  <li>Rosarios prominentes en las manos de las figuras</li>
+  <li>Representación de la Virgen con el niño Jesús</li>
+  <li>Elementos decorativos en el marco</li>
+  <li>Colores tradicionales religiosos (dorados, rojos, negros)</li>
+</ul>
+
+<p><strong>Estilo artístico</strong></p>
+<ul>
+  <li>Parece ser una reproducción o copia de un cuadro antiguo</li>
+  <li>Técnica que sugiere pintura al óleo o temple</li>
+  <li>Estilo barroco o colonial latinoamericano</li>
+  <li>Enmarcado con un marco ornamental dorado</li>
+</ul>
+
+<p><strong>Marco</strong></p>
+<ul>
+  <li>Marco exterior decorativo con detalles dorados
+    <ul>
+      <li>Bordes con patrones geométricos y vegetales</li>
+      <li>Esquina con elementos que parecen medallas o condecoraciones</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Texto en el cuadro</strong></p>
+<ul>
+  <li>"Nuestra Señora del Rosario de Chiquinquirá"</li>
+  <li>"Ruega Por Nosotros Madre de Dios"</li>
+</ul>`
+            },
+            {
+                titulo: "Cuadro de Paisaje",
+                imagen: "imagen7.jpg",
+                descripcion: `
+                    <p><strong>Elementos principales</strong></p>
+<ul>
+  <li>Paisaje rural con casas y molino de agua</li>
+  <li>Animales (gallinas y vacas)</li>
+  <li>Jardines con flores y árboles</li>
+  <li>Montañas en el fondo</li>
+  <li>Cielo azul con nubes blancas</li>
+</ul>
+
+<p><strong>Detalles específicos</strong></p>
+<ul>
+  <li>Casa con techo de paja y chimenea</li>
+  <li>Molino de agua con rueda grande</li>
+  <li>Puente de piedra sobre un arroyo</li>
+  <li>Gallinas de diferentes colores en el jardín</li>
+  <li>Vacas pastando en el prado</li>
+  <li>Flores de colores (rosadas, naranjas, amarillas)</li>
+  <li>Árboles frondosos con follaje verde</li>
+  <li>Jardín con setos bien cuidados</li>
+  <li>Estanque con cisnes</li>
+  <li>Escaleras de piedra</li>
+  <li>Macetas con plantas</li>
+  <li>Ventana con persianas</li>
+  <li>Puerta de madera</li>
+  <li>Cerca de madera</li>
+  <li>Camino de piedra</li>
+  <li>Nubes esponjosas en el cielo</li>
+</ul>
+
+<p><strong>Elementos naturales</strong></p>
+<ul>
+  <li>Río o arroyo con agua corriente</li>
+  <li>Cascada pequeña</li>
+  <li>Prado verde</li>
+  <li>Bosque de árboles</li>
+  <li>Montañas nevadas al fondo</li>
+  <li>Cielo despejado</li>
+</ul>
+
+<p><strong>Elementos arquitectónicos</strong></p>
+<ul>
+  <li>Casa de campo con techo de paja</li>
+  <li>Molino de agua tradicional</li>
+  <li>Puente de piedra</li>
+  <li>Jardín con diseño paisajístico</li>
+  <li>Porche con columnas</li>
+  <li>Ventanas con marcos de madera</li>
+  <li>Puerta principal de madera</li>
+  <li>Cerca de madera alrededor de la propiedad</li>
+</ul>
+
+<p><strong>Animales y vida silvestre</strong></p>
+<ul>
+  <li>Gallinas de diferentes colores</li>
+  <li>Vacas pastando</li>
+  <li>Cisnes en el estanque</li>
+  <li>Pájaros en el cielo</li>
+</ul>
+
+<p><strong>Color predominante</strong></p>
+<ul>
+  <li>Verde (prados y árboles)</li>
+  <li>Azul (cielo y agua)</li>
+  <li>Amarillo (tejados y flores)</li>
+  <li>Marrón (molino y tierra)</li>
+  <li>Blanco (nubes y algunas flores)</li>
+</ul>
+
+<p><strong>Estilo artístico</strong></p>
+<ul>
+  <li>Realismo con toques idílicos</li>
+  <li>Pintura al óleo o acrílica</li>
+  <li>Detalle y precisión en los elementos</li>
+  <li>Composición balanceada</li>
+  <li>Uso de luz natural para resaltar la escena</li>
+</ul>`
+            },
+            {
+                titulo: "Plantas",
+                imagen: "imagen8.jpg",
+                descripcion: `
+                    <p><strong>Planta 1 (izquierda)</strong></p>
+<ul>
+  <li><strong>Tipo de planta:</strong> Mata con tallos espinosos y hojas verdes</li>
+  <li><strong>Características</strong>
+    <ul>
+      <li>Tallos largos y delgados con espinas</li>
+      <li>Hojas ovales y verdes</li>
+      <li>Flores pequeñas de color rosa</li>
+    </ul>
+  </li>
+  <li><strong>Maceta</strong>
+    <ul>
+      <li>Color negro</li>
+      <li>Tamaño mediano</li>
+      <li>Tiene un plato debajo</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Planta 2 (derecha)</strong></p>
+<ul>
+  <li><strong>Tipo de planta:</strong> Mata con hojas ramificadas</li>
+  <li><strong>Características</strong>
+    <ul>
+      <li>Tallos ramificados con hojas pequeñas</li>
+      <li>Hojas verdes con forma lanceolada</li>
+      <li>Flores de color naranja</li>
+    </ul>
+  </li>
+  <li><strong>Maceta</strong>
+    <ul>
+      <li>Color negro</li>
+      <li>Tamaño similar a la primera planta</li>
+      <li>Tiene un plato naranja debajo</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Ubicación</strong></p>
+<ul>
+  <li>Ambas plantas están en una superficie de madera</li>
+  <li>Fondo blanco</li>
+  <li>Luz natural iluminando las plantas</li>
+</ul>
+
+<p><strong>Estado general</strong></p>
+<ul>
+  <li>Ambas plantas parecen estar sanas</li>
+  <li>Hojas brillantes y verdes</li>
+  <li>Flores en etapa de apertura</li>
+  <li>Suelo visible en las macetas con algo de hojarasca</li>
+</ul>
+
+<p><strong>Posible identificación</strong></p>
+<ul>
+  <li>La planta de la izquierda podría ser una especie de <em>Euphorbia milii</em> (Cristo de la Corona)</li>
+  <li>La planta de la derecha podría ser una especie de <em>Euphorbia</em> con flores naranjas</li>
+</ul>
+
+<p><strong>Detalles adicionales</strong></p>
+<ul>
+  <li>Ambas plantas tienen un aspecto tropical</li>
+  <li>Las espinas de la planta izquierda son prominentes</li>
+  <li>Las flores de la planta derecha tienen un centro oscuro</li>
+  <li>Las hojas de ambas plantas tienen un brillo que sugiere buena salud</li>
+  <li>Las macetas están limpias y bien cuidadas</li>
+</ul>`
+            },
+            {
+                titulo: "Cuadro de Caballo",
+                imagen: "imagen9.jpg",
+                descripcion: `
+                    <p><strong>Tema principal</strong></p>
+<ul>
+  <li>Caballo blanco en movimiento</li>
+  <li>Posición dinámica (galopando o corriendo)</li>
+</ul>
+
+<p><strong>Estilo artístico</strong></p>
+<ul>
+  <li>Realismo con toques de dinamismo</li>
+  <li>Captura de movimiento y expresión</li>
+  <li>Atención al detalle en el pelo y cola del caballo</li>
+</ul>
+
+<p><strong>Técnica</strong></p>
+<ul>
+  <li>Pintura al óleo o acrílica sobre lienzo</li>
+  <li>Uso de luces y sombras para dar volumen</li>
+  <li>Trabajo detallado en el pelaje del caballo</li>
+</ul>
+
+<p><strong>Colores predominantes</strong></p>
+<ul>
+  <li>Blanco (cuerpo del caballo)</li>
+  <li>Negro (fondo)</li>
+  <li>Grises (suelo y sombras)</li>
+  <li>Marrones claros (pequeños detalles)</li>
+</ul>
+
+<p><strong>Detalles visuales</strong></p>
+<ul>
+  <li>Pelo y cola del caballo al viento</li>
+  <li>Patas delanteras levantadas</li>
+  <li>Expresión en el hocico y ojos</li>
+  <li>Polvo levantado bajo las pezuñas</li>
+  <li>Reflejos en el pelaje</li>
+  <li>Fondo oscuro que resalta al caballo</li>
+</ul>
+
+<p><strong>Marco</strong></p>
+<ul>
+  <li>Marco de madera simple</li>
+  <li>Color marrón claro</li>
+  <li>Ancho moderado</li>
+</ul>`
+            },
+            {
+                titulo: "Tarjeta Cafam",
+                imagen: "imagen10.jpg",
+                descripcion: `
+                    <p><strong>Tipo de documento</strong></p>
+<ul>
+  <li>Tarjeta Integral de identificación</li>
+</ul>
+
+<p><strong>Entidad emisora</strong></p>
+<ul>
+  <li>CAFAM</li>
+</ul>
+
+<p><strong>Titular</strong></p>
+<ul>
+  <li><strong>Nombre:</strong> RODRIGUEZ GARZON NELIDA P</li>
+  <li><strong>Número de identificación:</strong> 6061 2500 3687 0511</li>
+</ul>
+
+<p><strong>Código de control</strong></p>
+<ul>
+  <li>01</li>
+</ul>
+
+<p><strong>Diseño</strong></p>
+<ul>
+  <li>Fondo azul con gradiente</li>
+  <li>Logotipo de CAFAM en la parte superior izquierda</li>
+  <li>Texto "Tarjeta Integral" en la parte superior derecha</li>
+  <li>Información del titular en la parte inferior izquierda</li>
+  <li>Código de control en la parte inferior derecha</li>
+</ul>`
+            },
+            {
+                titulo: "Billete 1 Dolar",
+                imagen: "imagen11.jpg",
+                descripcion: `
+                    <p><strong>Tipo de billete</strong></p>
+<ul>
+  <li><strong>Denominación:</strong> 1 dólar</li>
+  <li><strong>País de emisión:</strong> Estados Unidos de América</li>
+</ul>
+
+<p><strong>Elementos visuales principales</strong></p>
+<ul>
+  <li>Retrato de George Washington en el centro</li>
+  <li>Texto "<strong>THE UNITED STATES OF AMERICA</strong>" en la parte superior</li>
+  <li>Texto "<strong>ONE DOLLAR</strong>" en la parte inferior</li>
+  <li>Número "<strong>1</strong>" en varias posiciones (esquinas y centro)</li>
+  <li>Sello del Tesoro de los Estados Unidos</li>
+  <li>Sello de la Reserva Federal</li>
+  <li><strong>Número de serie:</strong> F 57589545 A</li>
+  <li><strong>Letra y número de la Reserva Federal:</strong> F (representando la ciudad de Nueva York)</li>
+  <li>Texto "<strong>FEDERAL RESERVE NOTE</strong>" en la parte superior</li>
+  <li>Texto "<strong>THIS NOTE IS LEGAL TENDER FOR ALL DEBTS PUBLIC AND PRIVATE</strong>" en la parte izquierda</li>
+  <li>Texto "<strong>WASHINGTON D.C.</strong>" en la parte derecha</li>
+  <li>Firma del Secretario del Tesoro</li>
+  <li>Texto "<strong>SERIES 2009</strong>" en la parte inferior derecha</li>
+</ul>
+
+<p><strong>Diseño y seguridad</strong></p>
+<ul>
+  <li>Patrones ornamentales complejos</li>
+  <li>Texto en relieve y detalles finos</li>
+  <li>Marcas de agua (no visibles en la imagen)</li>
+  <li>Hilos de seguridad (no visibles en la imagen)</li>
+  <li>Tinta especial en ciertos elementos (no aplicable en esta denominación)</li>
+</ul>
+
+<p><strong>Estado del billete</strong></p>
+<ul>
+  <li>Apariencia usada con algunos pliegues y signos de desgaste</li>
+  <li><strong>Color general:</strong> verde y negro con detalles en blanco</li>
+  <li>Texturas visibles por el uso</li>
+</ul>
+
+<p><strong>Uso y significado</strong></p>
+<ul>
+  <li>Moneda de curso legal en Estados Unidos</li>
+  <li>Representa la menor denominación en billetes de los Estados Unidos</li>
+  <li>Ampliamente reconocido y utilizado en transacciones internacionales</li>
+</ul>`
+            },
+            {
+                titulo: "Billete 20 Pesos Mexicanos",
+                imagen: "imagen12.jpg",
+                descripcion: `
+                    <p><strong>Información básica</strong></p>
+<ul>
+  <li><strong>Denominación:</strong> 20 pesos</li>
+  <li><strong>País de emisión:</strong> México</li>
+  <li><strong>Banco emisor:</strong> Banco de México</li>
+</ul>
+
+<p><strong>Elementos visuales principales</strong></p>
+<ul>
+  <li><strong>Retrato principal:</strong> Benito Juárez</li>
+  <li><strong>Símbolos:</strong> Balanza y libro</li>
+  <li><strong>Texto:</strong> "Banco de México" y "Veinte Pesos"</li>
+  <li><strong>Número de serie:</strong> P3513992</li>
+  <li><strong>Firma:</strong> Del gobernador del Banco de México</li>
+  <li><strong>Elementos de seguridad:</strong> Hilo de seguridad y marcas de agua visibles</li>
+  <li><strong>Color predominante:</strong> Azul y verde</li>
+  <li><strong>Diseño:</strong> Patrones geométricos y ornamentales</li>
+</ul>
+
+<p><strong>Información adicional</strong></p>
+<ul>
+  <li><strong>Fecha de emisión:</strong> No visible en la imagen</li>
+  <li><strong>Sello de la institución:</strong> Presente en el billete</li>
+  <li><strong>Firma del secretario de Hacienda:</strong> No visible en la imagen</li>
+  <li><strong>Elementos táctiles:</strong> No aplicables en esta denominación</li>
+</ul>
+
+<p><strong>Estado del billete</strong></p>
+<ul>
+  <li>Apariencia usada con algunos pliegues y signos de desgaste</li>
+  <li>Marcas de uso visibles</li>
+  <li><strong>Color general:</strong> azul y verde con detalles en blanco y dorado</li>
+</ul>
+
+<p><strong>Uso y significado</strong></p>
+<ul>
+  <li>Moneda de curso legal en México</li>
+  <li>Representa una de las denominaciones en billetes de México</li>
+  <li>Ampliamente reconocido y utilizado en transacciones diarias</li>
+</ul>`
+            },
+            {
+                titulo: "Caja de Whisky",
+                imagen: "imagen13.jpg",
+                descripcion: `
+                    <p><strong>Información del producto</strong></p>
+<ul>
+  <li><strong>Nombre:</strong> Grand Old Parr</li>
+  <li><strong>Tipo:</strong> Blended Scotch Whisky</li>
+  <li><strong>Edad:</strong> 12 años</li>
+  <li><strong>Origen:</strong> Destilado y embotellado en Escocia</li>
+  <li><strong>Tamaño:</strong> 750 ml</li>
+  <li><strong>Porcentaje de alcohol:</strong> 40% vol</li>
+</ul>
+
+<p><strong>Diseño de la caja</strong></p>
+<ul>
+  <li><strong>Color predominante:</strong> Azul y negro con detalles blancos y dorados</li>
+  <li><strong>Ilustraciones:</strong> Elementos musicales y figuras abstractas</li>
+  <li><strong>Edición:</strong> Limited Edition Design</li>
+  <li><strong>Texto adicional:</strong> "EL EXCESO DE ALCOHOL ES PERJUDICIAL PARA LA SALUD"</li>
+</ul>
+
+<p><strong>Elementos visuales</strong></p>
+<ul>
+  <li>Logotipo de "Grand Old Parr" en el centro</li>
+  <li>Texto "Blended Scotch Whisky" debajo del nombre</li>
+  <li>Número "12" indicando los años de añejamiento</li>
+  <li>Firma estilizada en el diseño</li>
+  <li>Elementos decorativos alrededor del logotipo</li>
+  <li>Advertencia sobre el consumo responsable de alcohol</li>
+</ul>`
+            },
+        ];
+        
+        let estanteActual = 0;
+        const totalEstantes = obras.length;
+        
+        // Función para actualizar el contenido del estante
+        function actualizarEstante() {
+            document.getElementById('titulo-actual').textContent = obras[estanteActual].titulo;
+            document.getElementById('descripcion-actual').innerHTML = obras[estanteActual].descripcion;
+            document.getElementById('imagen-actual').src = obras[estanteActual].imagen;
+            document.getElementById('estante-actual').textContent = estanteActual + 1;
+        }
+        
+        // Eventos para los botones de navegación
+        document.getElementById('prev').addEventListener('click', function() {
+            estanteActual = (estanteActual - 1 + totalEstantes) % totalEstantes;
+            actualizarEstante();
+        });
+        
+        document.getElementById('next').addEventListener('click', function() {
+            estanteActual = (estanteActual + 1) % totalEstantes;
+            actualizarEstante();
+        });
+        
+        // Inicializar con el primer estante
+        actualizarEstante();
+    </script>
+</body>
+</html>
